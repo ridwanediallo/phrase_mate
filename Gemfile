@@ -7,7 +7,7 @@ gem "rails", "~> 8.0.0"
 gem "pg", "~> 1.1"
 
 # JWT for authentication
-gem "jwt"
+gem "jwt", "~> 2.0"
 
 gem "bcrypt", "~> 3.1.7"
 # Use the Puma web server [https://github.com/puma/puma]
@@ -51,5 +51,3 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 end
-
-
