@@ -13,11 +13,13 @@ class UsersController < ApplicationController
   end
 
   def create
-    user = User.new(user_params)
-    if user.present?
+    existing_user = User.find_by(email: user_params[:email])
+    if existing_user.present?
       render json: { error: "User already exists" }, status: :conflict
       return
     end
+
+    user = User.new(user_params)
     if user.save
       render json: { message: "User created successfully", user: user }, status: :created
     else
@@ -25,9 +27,9 @@ class UsersController < ApplicationController
     end
   end
 
- def update
+  def update
     user = User.find(params[:id])
-    if @current_user == user || @current_user.role == "admin"
+    if @current_user == user || @current_user.admin?
       if user.update(user_params)
         render json: user, status: :ok
       else
@@ -36,7 +38,7 @@ class UsersController < ApplicationController
     else
       render json: { errors: "Forbidden" }, status: :forbidden
     end
- end
+  end
 
   def destroy
     user = User.find(params[:id])
@@ -45,7 +47,7 @@ class UsersController < ApplicationController
       return
     end
 
-    if @current_user == user || @current_user.role == "admin"
+    if @current_user == user || @current_user.admin?
       user.destroy
       render json: { message: "User deleted successfully" }, status: :ok
     else
@@ -60,6 +62,12 @@ class UsersController < ApplicationController
       params.require(:user).permit(:email, :password, :role)
     else
       params.require(:user).permit(:email, :password)
+    end
+  end
+
+  def admin_only
+    unless @current_user.admin?
+      render json: { error: "Admin access required" }, status: :forbidden
     end
   end
 end
