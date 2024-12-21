@@ -44,6 +44,6 @@ class PhrasesController < ApplicationController
   end
 
   def phrase_params
-    params.require(:phrase).permit(:name, :explanation, :examples)
+    params.require(:phrase).permit(:text, :meaning, :examples)
   end
 end
