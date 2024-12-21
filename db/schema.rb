@@ -15,8 +15,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_10_144436) do
   enable_extension "pg_catalog.plpgsql"
 
   create_table "phrases", force: :cascade do |t|
-    t.string "name"
-    t.text "explanation"
+    t.string "text"
+    t.text "meaning"
     t.text "examples"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
