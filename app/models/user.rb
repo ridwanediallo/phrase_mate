@@ -7,4 +7,12 @@ class User < ApplicationRecord
   def assign_default_role
     self.role ||= "user"
   end
+
+  def admin?
+    role == "admin"
+  end
+
+  def user?
+    role == "user"
+  end
 end

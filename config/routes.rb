@@ -3,4 +3,8 @@ Rails.application.routes.draw do
   post "/login", to: "auth#login"
   resources :users, only: [ :index, :show, :create, :update, :destroy ]
   resources :phrases
+
+  namespace :admin do
+    resources :users, only: [ :create ]
+  end
 end
