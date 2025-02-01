@@ -10,14 +10,53 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_10_144436) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_25_180726) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "phrase_tags", force: :cascade do |t|
+    t.bigint "phrase_id", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["phrase_id"], name: "index_phrase_tags_on_phrase_id"
+    t.index ["tag_id"], name: "index_phrase_tags_on_tag_id"
+  end
 
   create_table "phrases", force: :cascade do |t|
     t.string "text"
     t.text "meaning"
-    t.text "examples"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "category"
+    t.string "difficulty_level"
+    t.string "tags", default: [], array: true
+    t.json "related_phrases"
+    t.string "audio_url"
+    t.string "examples", default: [], array: true
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.bigint "quiz_id", null: false
+    t.bigint "phrase_id", null: false
+    t.string "question_text"
+    t.string "correct_answer"
+    t.string "wrong_answers", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["phrase_id"], name: "index_questions_on_phrase_id"
+    t.index ["quiz_id"], name: "index_questions_on_quiz_id"
+  end
+
+  create_table "quizzes", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -29,4 +68,9 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_10_144436) do
     t.datetime "updated_at", null: false
     t.string "role"
   end
+
+  add_foreign_key "phrase_tags", "phrases"
+  add_foreign_key "phrase_tags", "tags"
+  add_foreign_key "questions", "phrases"
+  add_foreign_key "questions", "quizzes"
 end
