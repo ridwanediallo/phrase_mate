@@ -7,7 +7,7 @@ gem "rails", "~> 8.0.0"
 gem "pg", "~> 1.1"
 
 # JWT for authentication
-gem "jwt", "~> 2.0"
+gem "jwt", "~> 2.10"
 
 gem "bcrypt", "~> 3.1.7"
 # Use the Puma web server [https://github.com/puma/puma]
